@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Opposum : MonoBehaviour
+public class Opposum : Enemy
 {
     private Rigidbody2D rigidbody;
     [SerializeField] private float speed, rayDetectionDistance;
     [SerializeField] private LayerMask obstacleMask;
     private float currentSpeed;
+    [SerializeField] private GameObject explosionEffect;
 
-    void Start()
+    override protected void Start()
     {
+        base.Start();
         rigidbody = GetComponent<Rigidbody2D>();
         currentSpeed = speed;
     }
@@ -31,5 +33,12 @@ public class Opposum : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, rayDetectionDistance, obstacleMask);
 
         return hit.collider != null;
+    }
+
+    public override void OnHit()
+    {
+        Instantiate(explosionEffect, transform.position, Quaternion.identity);
+
+        Destroy(this.gameObject);
     }
 }

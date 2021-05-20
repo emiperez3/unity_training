@@ -92,12 +92,16 @@ public class Player : MonoBehaviour
             if (enemyHit)
             {
                 // Aca vamos a dejar el comportamiento de recibir un golpe al mismo enemigo
-                //Destroy(collision.gameObject);
+                Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+                if (enemy != null)
+                {
+                    enemy.OnHit();
+                }
                 rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             } else
             {
-
-                //Destroy(gameObject);
+                FindObjectOfType<LevelManager>().OnPlayerDeath();
+                Destroy(gameObject);
             }
         }
     }
